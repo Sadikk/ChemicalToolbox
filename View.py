@@ -1,10 +1,12 @@
-from Tkinter import *
-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 """
 Vue du pattern MVC - Presentation des données et interaction avec 
 l'utilisateur
 """
+
+from Tkinter import *
 class View(Tk):
 	def __init__(self):
 		Tk.__init__(self)
