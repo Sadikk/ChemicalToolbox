@@ -4,6 +4,11 @@
 """
 Classe représentant le tableau périodique des élements
 """
+from Model import Model
+
 class PeriodicTable:
 	def __init__(self):
-		pass
+		self.elements = Model.instance.getElements()
+		
+		
+	

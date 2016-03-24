@@ -5,29 +5,31 @@
 Classe s'occupant de la relation avec la base de données
 """
 
-import sqlit3
+import sqlite3
 import os.path
+from ChemicalElement import ChemicalElement
 
 class DatabaseManager:
 	def __init__(self, fname):
 		self.filename = fname
-		self.connection = sqlit3.connect(self.filename)
-		self.cursor = connection.cursor()
-		if not os.path.isfile(self.filename):
-			self.setup()
+		self.connection = sqlite3.connect(self.filename)
+		self.connection.text_factory = str
+		self.cursor = self.connection.cursor()
 		
-		
-	def setup(self):
+	def fetchElements(self):
 		"""
-			Installe le fichier de base de données
+			Récupère tous les éléments chimiques de la base de données
+			et les renvoie sous forme d'une liste
 		"""
-		self.cursor.execute("CREATE TABLE elements")
-		data = [("Oxygene", 16, 22)]
-		for elem in data:
-			cursor.execute("INSERT INTO elements VALUES(?,?,?)", elem)
-		self.connection.commit()
+		result = []
+		self.cursor.execute('SELECT * FROM elements')
+		for row in self.cursor.fetchall():
+			result.append(ChemicalElement(row[0], row[1], float(row[2]),\
+			 float(row[3]), row[4]))
+		return result
 		
-	def close():
+		
+	def close(self):
 		"""
 			Ferme la connexion courante
 		"""
