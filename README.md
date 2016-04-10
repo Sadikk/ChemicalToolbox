@@ -5,7 +5,7 @@ Boite à outils pouvant simplifier le travail d'un laborantin dans le cadre de l
 
 ## Getting Started
 
-Téléchargez le .zip, extrayez les fichiers dans un dossier et lancez "setup.py"
+Téléchargez le .zip, extrayez les fichiers dans un dossier et lancez "controller.py"
 
 ### Prerequisities
 
