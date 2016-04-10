@@ -6,4 +6,5 @@ from Tkinter import *
 class ComputerView(Frame):
     def __init__(self, root):
         Frame.__init__(self, root)
+        #todo Thibaut
         pass
