@@ -5,13 +5,19 @@
 Modele du pattern MVC - Manipule les données
 """
 from DatabaseManager import DatabaseManager
+from ConcentrationComputer import ConcentrationComputer
+from Balance import Balance
 
-class Model(self):
-	instance = None
-	
-	def __init__(self):
-		Model.instance = self
-		
-	def getElements(self):
-		return DatabaseManager.fetchElements()
-		
+class Model():
+    instance = None
+    
+    def __init__(self):
+        Model.instance = self
+        self.db = DatabaseManager("periodic.sqlite")
+        self.computer = ConcentrationComputer()
+        self.balance = Balance()
+        
+    def getElements(self):
+        elements = self.db.fetchElements()
+        return elements
+        
