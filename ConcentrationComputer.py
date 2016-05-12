@@ -16,32 +16,40 @@ def computeMolarMass(self):
     """
         Calcule la masse molaire
     """
-    #todo Thibaut
+    self._molarMass = (self._massToDissolve) / (self._concentration * self._volume)
     
 def computeVolume(self):
     """
         Calcule le volume
     """
-    #todo Thibaut
+    self._volume = (self._massToDissolve)/(self._concentration * self._molarMass)
     
 def computeConcentration(self):
     """
         Calcule la concentration
     """
-    #todo Thibaut
+    self._concentration = (self._massToDissolve) / (self._molarMass * self._volume)
     
 def computeMassToDissolve(self):
     """
         Calcule la masse à dissoudre
     """
-    #todo Thibaut
+    self._massToDissolve = self.concentration * self._molarMass * self._volume
     
 def checkMissing(self):
     """
         Verifie si chaque valeur a été remplie et calcule la valeur
         manquante si nécessaire
     """
-    #todo Thibaut
+    if self._massToDissolve !=0 and if self._concentration !=0 and if self._volume !=0:
+           computeMolarMass(self)
+    if self._massToDissolve !=0 and if self._concentration !=0 and if self._molarMass !=0:
+            computeVolume(self)
+    if self._massToDissolve !=0 and if self._molarMass !=0 and if self._volume !=0:
+            computeConcentration(self)
+    if self._concentration !=0 and if self._molarMass !=0 and if self._volume !=0:
+            computeMassToDissolve(self)
+    
     
 #region Properties
 def getMolarmass(self):
