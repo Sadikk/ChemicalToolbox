@@ -12,6 +12,7 @@ class Balance:
         self.r_coef = dict()
         
     def balanceEquation(self, rOne, rTwo, pOne, pTwo):
+		
         """
             Equilibre une equation en calculant les différents 
             coefficients stoechiométriques.
@@ -27,14 +28,15 @@ class Balance:
             :return: Les coefficients stoechiometriques de chaque element
             :rtype: int[3]
         """
+        
         rOne_p = self.parseEntry(rOne)
         rTwo_p = self.parseEntry(rTwo)
         pOne_p = self.parseEntry(pOne)
         pTwo_p = self.parseEntry(pTwo)
-        self.r_coef = dict(rOne_p.items() + rTwo_p.items() +
+        """self.r_coef = dict(rOne_p.items() + rTwo_p.items() +
     [(k, rOne_p[k] + rTwo_p[k]) for k in set(rTwo_p) & set(rOne_p)])
 		self.p_coef = dict(pOne_p.items() + pTwo_p.items() +
-    [(k, pOne_p[k] + pTwo_p[k]) for k in set(pTwo_p) & set(pOne_p)])
+    [(k, pOne_p[k] + pTwo_p[k]) for k in set(pTwo_p) & set(pOne_p)])"""
         
     def parseEntry(self, entry):
 		"""
