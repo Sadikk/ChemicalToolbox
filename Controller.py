@@ -19,6 +19,11 @@ def clickHandler(param):
         window.createBalanceView()
     elif param == "CONCENTRATION":
         window.createComputerView()
+        window.toolView.MTDChanged.append(MTDHandler)
+    
+
+def MTDHandler(param):
+	  model.
     
 def onClosing():
     #fermer la base de données à la fermeture de la fenêtre
