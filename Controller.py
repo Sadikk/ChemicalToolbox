@@ -13,33 +13,62 @@ model = Model()
 window = View()
 
 
-
+#region ConcentrationHandlers
 def MTDHandler(param):
-	model.computer.setMassToDissolve(int(param))
+    if str.isdigit(param):
+        model.computer.setMassToDissolve(int(param))
+    else:
+        model.computer.setMassToDissolve(0)
 
 def MSHandler(param):
-	model.computer.setMolarmass(int(param))
+    if str.isdigit(param):
+        model.computer.setMolarmass(int(param))
+    else:
+        model.computer.setMolarmass(0)
 	  
 def ConcentrationHandler(param):
-	model.computer.setConcentration(int(param))
+    if str.isdigit(param):
+	    model.computer.setConcentration(int(param))
+    else:
+        model.computer.setConcentration(0)
 	  
 def VolumeHandler(param):
-	model.computer.setVolume(int(param))	 
+    if str.isdigit(param):
+        model.computer.setVolume(int(param))
+    else:
+        model.computer.setVolume(0)
+		 
 	  
 def ComputedHandler():
-	window.toolView.MassToDissolve.set(model.computer.getMassToDissolve())
-	    
+    window.toolView.MassToDissolve.set(model.computer.getMassToDissolve())
+    window.toolView.MolarMass.set(model.computer.getMolarmass())
+    window.toolView.Concentration.set(model.computer.getConcentration())
+    window.toolView.Volume.set(model.computer.getVolume())
+#endregion
+
+#region BalanceHandler
+def balanceHandler():
+    #todo envoyer les resultats à la view
+    coef = model.balance.balanceEquation(window.toolView.R1.get(), \
+    window.toolView.R2.get(), \
+    window.toolView.P1.get(), \
+    window.toolView.P2.get())
+#endregion
+
+#region MainHandler
 def clickHandler(param):
     if param == "TABLEAU":
         window.createTableView()
     elif param == "EQUATION":
         window.createBalanceView()
+        window.toolView.balanceRequest.append(balanceHandler)
     elif param == "CONCENTRATION":
         window.createComputerView()
         window.toolView.MTDChanged.append(MTDHandler)
         window.toolView.MSChanged.append(MSHandler)
         window.toolView.ConcentrationChanged.append(ConcentrationHandler)
         window.toolView.VolumeChanged.append(VolumeHandler)
+#endregion
     
     	      
 def onClosing():
