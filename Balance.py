@@ -12,9 +12,12 @@ class Balance:
     def __init__(self):
         self.p_coef = dict()
         self.r_coef = dict()
+        self.rOne_p = dict()
+        self.rTwo_p = dict()
+        self.pOne_p = dict()
+        self.pTwo_p = dict()
         
     def balanceEquation(self, rOne, rTwo, pOne, pTwo):
-        
         """
             Equilibre une equation en calculant les différents 
             coefficients stoechiométriques.
@@ -30,10 +33,11 @@ class Balance:
             :return: Les coefficients stoechiometriques de chaque element
             :rtype: int[3]
         """
-        self.parseCoef(rOne, rTwo, pOne, pTwo)
+        self.parseAtoms(rOne, rTwo, pOne, pTwo)
+        
         #todo Manon
         
-    def parseCoef(self, rOne, rTwo, pOne, pTwo):
+    def parseAtoms(self, rOne, rTwo, pOne, pTwo):
         """
             Analyse une equation pour recuperer le nombre d'atomes
             de chaque côté de l'équation
@@ -49,10 +53,10 @@ class Balance:
             :return: - (les resultats sont sauvegardés dans l'instance de classe)
             :rtype: void
         """
-        rOne_p = self.parseEntry(rOne)
-        rTwo_p = self.parseEntry(rTwo)
-        pOne_p = self.parseEntry(pOne)
-        pTwo_p = self.parseEntry(pTwo)
+        self.rOne_p = self.parseEntry(rOne)
+        self.rTwo_p = self.parseEntry(rTwo)
+        self.pOne_p = self.parseEntry(pOne)
+        self.pTwo_p = self.parseEntry(pTwo)
         self.r_coef = dict(rOne_p.items() + rTwo_p.items() + \
     [(k, rOne_p[k] + rTwo_p[k]) for k in set(rTwo_p) & set(rOne_p)])
         print self.r_coef
@@ -88,3 +92,42 @@ class Balance:
                 
         return result
         
+"""
+todo:
+enregistrer chaque molecule comme structure
+
+Molecule A 
+ {
+   1 C
+   4 H
+   reactif=true
+ }
+
+Molecule B 
+ {
+   2 O
+   reactif=true
+ }
+
+Molecule C 
+ {
+   1 C
+   2 O
+   reactif=false
+ }
+
+Molecule D
+ {
+   2 H
+   1 O
+   reactif=false
+ }
+pour toutes.
+verifier equilibre
+resoudre le systeme:
+ { a*Molecule A.C = c*Molecule C.C
+ { a*Molecule A.H = d*Molecule D.H
+ { b*Molecule B.O = c*Molecule C.O + d*Molecule D.D
+
+toString(a + MoleculeA + b + MoleculeB + c + MoleculeC + d + MoleculeD)
+"""
