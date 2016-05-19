@@ -38,8 +38,7 @@ class Balance:
             :rtype: int[3]
         """
         print "balance equation"
-        self.parseCoef(rOne, rTwo, pOne, pTwo)
-        #todo Manon
+        return self.parseCoef(rOne, rTwo, pOne, pTwo)
         
     def parseCoef(self, rOne, rTwo, pOne, pTwo):
         """
@@ -81,11 +80,20 @@ class Balance:
             print str(self.coeffA) + str(rOne) + "+" + str(self.coeffB) + str(rTwo) + "="  + str(self.coeffC) + str(pOne) + "+" + str(self.coeffD) + str(pTwo) 
 
 
+        
+        
+        result = []
+        result.append(self.coeffA)
+        result.append(self.coeffB)
+        result.append(self.coeffC)
+        result.append(self.coeffD)
+        
         # Re initialise les coeffs pour la prochaine execution
         self.coeffA = 1
         self.coeffB = 1
         self.coeffC = 1
         self.coeffD = 1
+        return result
 
     def upCoeff(self) :
         if (self.coeffD == self.LIMIT or not(self.D)) :

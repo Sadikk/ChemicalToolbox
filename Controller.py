@@ -35,6 +35,11 @@ def balanceHandler():
     window.toolView.R2.get(), \
     window.toolView.P1.get(), \
     window.toolView.P2.get())
+    
+    window.toolView.equation.set(str(coef[0]) + window.toolView.R1.get() + \
+    " + " + str(coef[1]) + window.toolView.R2.get() + " -> " + \
+    str(coef[2]) + window.toolView.P1.get() + \
+    " + " + str(coef[3]) + window.toolView.P2.get())
 #endregion
 
 #region MainHandler
