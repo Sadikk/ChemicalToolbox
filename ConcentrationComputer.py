@@ -8,10 +8,10 @@ Classe gérant tous les calculs liés à la concentration
 """
 class ConcentrationComputer:
     def __init__(self):
-        self._molarMass = 0
-        self._volume = 0
-        self._concentration = 0
-        self._massToDissolve = 0
+        self._molarMass = 0.0
+        self._volume = 0.0
+        self._concentration = 0.0
+        self._massToDissolve = 0.0
         self.computed = Event()
         
         
@@ -73,7 +73,8 @@ class ConcentrationComputer:
             Mutateur de la masse molaire 
         """
         self._molarMass = value
-        self.checkMissing()
+        #SUPPRIME : passage par bouton
+        #self.checkMissing()
         
     def getVolume(self):
         """
@@ -86,7 +87,8 @@ class ConcentrationComputer:
             Mutateur du volume
         """
         self._volume = value
-        self.checkMissing()
+        #SUPPRIME : passage par bouton
+        #self.checkMissing()
         
     def getConcentration(self):
         """
@@ -99,7 +101,8 @@ class ConcentrationComputer:
             Mutateur de la concentration
         """
         self._concentration = value
-        self.checkMissing()
+        #SUPPRIME : passage par bouton
+        #self.checkMissing()
         
     def getMassToDissolve(self):
         """
@@ -112,7 +115,8 @@ class ConcentrationComputer:
             Mutateur de la masse à dissoudre
         """
         self._massToDissolve = value
-        self.checkMissing()
+        #SUPPRIME : passage par bouton
+        #self.checkMissing()
     #endregion Properties
     
 

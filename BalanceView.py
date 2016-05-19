@@ -35,6 +35,8 @@ class BalanceView(Frame):
         #bouton pour equilibrer
         Button(self, text="Equilibrer", command=self.balance).grid(row = 4, column = 0, columnspan = 2)
         
+        Label(self, text="Equation -").grid(row = 5, column= 0, columnspan=2, pady=10)
+        
     def balance(self):
         #on declenche l'event
         self.balanceRequest()
