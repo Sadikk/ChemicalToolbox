@@ -221,21 +221,29 @@ class Balance:
             :return: Le nombre de chaque atome
             :rtype: dictionary<string, int>
         """
+        """else:
+                if (element != ""):
+                    result[element] = 1
+                    element = ""
+                element += char"""
         result = dict()
         element = ""
         value = ""
         for char in entry:
-            if str.isdigit(char):
-                value += char
-                if (element != ""):
-                    result[element] = value
-                element = ""
-                value = ""
-            else:
-                if (element != ""):
-                    result[element] = 1
-                    element = ""
-                element += char
+			if str.isupper(char):
+				if element != "":
+					result[element] = 1
+					element = ""
+				element += char
+			elif str.islower(char):
+				element += char
+			elif str.isdigit(char):
+				value += char
+				if (element != ""):
+					result[element] = value
+				element = ""
+				value = ""
+            
 
         if (element != ""):
             result[element] = 1
