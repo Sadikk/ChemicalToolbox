@@ -10,14 +10,18 @@ Classe gérant l'equilibrage d'équation
 #CH4 + O2 -> CO2 + H2O
 class Balance:
     def __init__(self):
-        self.p_coef = dict()
-        self.r_coef = dict()
-        self.rOne_p = dict()
-        self.rTwo_p = dict()
-        self.pOne_p = dict()
-        self.pTwo_p = dict()
+        self.A = dict()
+        self.B = dict()
+        self.C = dict()
+        self.D = dict()
+        self.coeffA = 1
+        self.coeffB = 1
+        self.coeffC = 1
+        self.coeffD = 1
+        self.LIMIT = 20
         
     def balanceEquation(self, rOne, rTwo, pOne, pTwo):
+        
         """
             Equilibre une equation en calculant les différents 
             coefficients stoechiométriques.
@@ -33,11 +37,11 @@ class Balance:
             :return: Les coefficients stoechiometriques de chaque element
             :rtype: int[3]
         """
-        self.parseAtoms(rOne, rTwo, pOne, pTwo)
-        
+        print "balance equation"
+        self.parseCoef(rOne, rTwo, pOne, pTwo)
         #todo Manon
         
-    def parseAtoms(self, rOne, rTwo, pOne, pTwo):
+    def parseCoef(self, rOne, rTwo, pOne, pTwo):
         """
             Analyse une equation pour recuperer le nombre d'atomes
             de chaque côté de l'équation
@@ -53,17 +57,152 @@ class Balance:
             :return: - (les resultats sont sauvegardés dans l'instance de classe)
             :rtype: void
         """
-        self.rOne_p = self.parseEntry(rOne)
-        self.rTwo_p = self.parseEntry(rTwo)
-        self.pOne_p = self.parseEntry(pOne)
-        self.pTwo_p = self.parseEntry(pTwo)
-        self.r_coef = dict(rOne_p.items() + rTwo_p.items() + \
-    [(k, rOne_p[k] + rTwo_p[k]) for k in set(rTwo_p) & set(rOne_p)])
-        print self.r_coef
-        self.p_coef = dict(pOne_p.items() + pTwo_p.items() + \
-    [(k, pOne_p[k] + pTwo_p[k]) for k in set(pTwo_p) & set(pOne_p)])
-        print self.p_coef
+        self.A = self.parseEntry(rOne)
+        self.B = self.parseEntry(rTwo)
+        self.C = self.parseEntry(pOne)
+        self.D = self.parseEntry(pTwo)
         
+        print "A =>"
+        print self.A
+        print "B =>"
+        print self.B
+        print "C =>"
+        print self.C
+        print "D =>"
+        print self.D
+
+        # BruteForce : Tq l'equation n'est pas equilibre, on incremente les coeffs jusqu'a la limite
+        while (not(self.isEquilibry())) :
+            self.upCoeff()
+
+        if (not(self.D)) :
+            print str(self.coeffA) + str(rOne) + "+" + str(self.coeffB) + str(rTwo) + "="  + str(self.coeffC) + str(pOne) 
+        else :
+            print str(self.coeffA) + str(rOne) + "+" + str(self.coeffB) + str(rTwo) + "="  + str(self.coeffC) + str(pOne) + "+" + str(self.coeffD) + str(pTwo) 
+
+
+        # Re initialise les coeffs pour la prochaine execution
+        self.coeffA = 1
+        self.coeffB = 1
+        self.coeffC = 1
+        self.coeffD = 1
+
+    def upCoeff(self) :
+        if (self.coeffD == self.LIMIT or not(self.D)) :
+            self.coeffD = 1
+            if (self.coeffC == self.LIMIT) :
+                self.coeffC = 1
+                if (self.coeffB == self.LIMIT):
+                    self.coeffB = 1
+                    if (self.coeffA == self.LIMIT):
+                        self.coeffA = 1
+                    else :
+                        self.coeffA += 1
+                else :
+                    self.coeffB += 1
+            else : 
+                self.coeffC += 1
+            
+        else :
+            self.coeffD += 1
+        
+    def isEquilibry(self):
+        if (self.equilibreA()) :
+            if (self.equilibreB()):
+                return True
+            
+        return False
+
+    def equilibreA(self) :
+        numberL = ""
+        letterL = ""
+        numberR = ""
+        letterR = ""
+        
+        for k, v in self.A.items() :
+            numberL = v
+            letter = k
+            numberL_B = self.getResultForLetter(k, self.B)
+            numberR_C = self.getResultForLetter(k, self.C)
+            numberR_D = self.getResultForLetter(k, self.D)
+
+            if (numberR_C != -1 and numberR_D != -1) :
+                if (numberL_B != -1) :
+                    #print str(numberL) + "x" + str(self.coeffA) + "+" + str(numberL_B) + "x" + str(self.coeffB) + "=" + str(numberR_C) + "x" + str(self.coeffC) + "+" + str(numberR_D) + "x" + str(self.coeffD)
+                    if (int(numberL) * int(self.coeffA) + int(numberL_B) * int(self.coeffB) != int(numberR_C) * int(self.coeffC) + int(numberR_D) * int(self.coeffD)):
+                        return False
+                else :
+                    #print str(numberL) + "x" + str(self.coeffA) + "=" + str(numberR_C) + "x" + str(self.coeffC) + "+" + str(numberR_D) + "x" + str(self.coeffD)
+                    if (int(numberL) * int(self.coeffA) != int(numberR_C) * int(self.coeffC) + int(numberR_D) * int(self.coeffD)):
+                        return False
+            elif (numberR_C != -1 and numberR_D == -1):                 
+                if (numberL_B != -1) :
+                    #print str(numberL) + "x" + str(self.coeffA) + "+" + str(numberL_B) + "x" + str(self.coeffB) + "=" + str(numberR_C) + "x" + str(self.coeffC)
+                    if (int(numberL_B) * int(self.coeffB) + int(numberL) * int(self.coeffA) != int(numberR_C) * int(self.coeffC)):
+                        return False
+                else :
+                    #print str(numberL) + "x" + str(self.coeffA) + "=" + str(numberR_C) + "x" + str(self.coeffC)
+                    if (int(numberL) * int(self.coeffA) != int(numberR_C) * int(self.coeffC)):
+                        return False
+            elif (numberR_C == -1 and numberR_D != -1):
+                if (numberL_B != -1) :
+                    #print str(numberL) + "x" + str(self.coeffA) + "+" + str(numberL_B) + "x" + str(self.coeffB) + "=" + str(numberR_D) + "x" + str(self.coeffD)
+                    if (int(numberL_B) * int(self.coeffB) + int(numberL) * int(self.coeffA) != int(numberR_D) * int(self.coeffD)):
+                        return False
+                else :
+                    #print str(numberL) + "x" + str(self.coeffA) + "=" + str(numberR_D) + "x" + str(self.coeffD)
+                    if (int(numberL) * int(self.coeffA) != int(numberR_D) * int(self.coeffD)):
+                        return False
+
+        return True
+
+    def equilibreB(self) :
+        numberL = ""
+        letterL = ""
+        numberR = ""
+        letterR = ""
+        
+        for k, v in self.B.items() :
+            numberL = v
+            letter = k
+            numberL_A = self.getResultForLetter(k, self.A)
+            numberR_C = self.getResultForLetter(k, self.C)
+            numberR_D = self.getResultForLetter(k, self.D)
+            if (numberR_C != -1 and numberR_D != -1) :
+                if (numberL_A != -1) :
+                    #print str(numberL) + "x" + str(self.coeffB) + "+" + str(numberL_A) + "x" + str(self.coeffA) + "=" + str(numberR_C) + "x" + str(self.coeffC) + "+" + str(numberR_D) + "x" + str(self.coeffD)
+                    if (int(numberL) * int(self.coeffB) + int(numberL_A) * int(self.coeffA) != int(numberR_C) * int(self.coeffC) + int(numberR_D) * int(self.coeffD)):
+                        return False
+                else :
+                    #print str(numberL) + "x" + str(self.coeffB) + "=" + str(numberR_C) + "x" + str(self.coeffC) + "+" + str(numberR_D) + "x" + str(self.coeffD)
+                    if (int(numberL) * int(self.coeffB) != int(numberR_C) * int(self.coeffC) + int(numberR_D) * int(self.coeffD)):
+                        return False
+            elif (numberR_C != -1 and numberR_D == -1):                 
+                if (numberL_A != -1) :
+                    #print str(numberL) + "x" + str(self.coeffB) + "+" + str(numberL_A) + "x" + str(self.coeffA) + "=" + str(numberR_C) + "x" + str(self.coeffC)
+                    if (int(numberL_A) * int(self.coeffA) + int(numberL) * int(self.coeffB) != int(numberR_C) * int(self.coeffC)):
+                        return False
+                else :
+                    #print str(numberL) + "x" + str(self.coeffB) + "=" + str(numberR_C) + "x" + str(self.coeffC)
+                    if (int(numberL) * int(self.coeffB) != int(numberR_C) * int(self.coeffC)):
+                        return False
+            elif (numberR_C == -1 and numberR_D != -1):
+                if (numberL_A != -1) :
+                    #print str(numberL) + "x" + str(self.coeffB) + "+" + str(numberL_A) + "x" + str(self.coeffA) + "=" + str(numberR_D) + "x" + str(self.coeffD)
+                    if (int(numberL_A) * int(self.coeffA) + int(numberL) * int(self.coeffB) != int(numberR_D) * int(self.coeffD)):
+                        return False
+                else :
+                    #print str(numberL) + "x" + str(self.coeffB) + "=" + str(numberR_D) + "x" + str(self.coeffD)
+                    if (int(numberL) * int(self.coeffB) != int(numberR_D) * int(self.coeffD)):
+                        return False
+
+        return True
+
+    def getResultForLetter(self, letter, collec) :
+        if letter in collec :
+            return collec[letter]
+        else :
+            return -1
         
     def parseEntry(self, entry):
         """
@@ -80,54 +219,17 @@ class Balance:
         for char in entry:
             if str.isdigit(char):
                 value += char
-                if len(element) > 1:
-                    result[element[0]] = 1
-                    result[element[1]] = value
-                else:
+                if (element != ""):
                     result[element] = value
                 element = ""
                 value = ""
             else:
+                if (element != ""):
+                    result[element] = 1
+                    element = ""
                 element += char
-                
+
+        if (element != ""):
+            result[element] = 1
+        print result        
         return result
-        
-"""
-todo:
-enregistrer chaque molecule comme structure
-
-Molecule A 
- {
-   1 C
-   4 H
-   reactif=true
- }
-
-Molecule B 
- {
-   2 O
-   reactif=true
- }
-
-Molecule C 
- {
-   1 C
-   2 O
-   reactif=false
- }
-
-Molecule D
- {
-   2 H
-   1 O
-   reactif=false
- }
-pour toutes.
-verifier equilibre
-resoudre le systeme:
- { a*Molecule A.C = c*Molecule C.C
- { a*Molecule A.H = d*Molecule D.H
- { b*Molecule B.O = c*Molecule C.O + d*Molecule D.D
-
-toString(a + MoleculeA + b + MoleculeB + c + MoleculeC + d + MoleculeD)
-"""
