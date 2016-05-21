@@ -47,21 +47,33 @@ class View(Tk):
         self.click(param)
         
     def createTableView(self):
+        """
+            Crée le tableau périodique des élements
+        """
         self.clear()
         self.toolView = PeriodicTable(self.toolFrame)
         self.toolView.pack()
         
     def createComputerView(self):
+        """
+            Crée la vue du calcul de concentration
+        """
         self.clear()
         self.toolView = ComputerView(self.toolFrame)
         self.toolView.pack()
         
     def createBalanceView(self):
+        """
+            Crée la vue de l'équilibrage d'équation
+        """
         self.clear()
         self.toolView = BalanceView(self.toolFrame)
         self.toolView.pack()
         
     def clear(self):
+        """
+            Efface l'ancienne vue 
+        """
         #supprime les anciens widgets si il y a 
         for widget in self.toolFrame.winfo_children():
             widget.destroy()

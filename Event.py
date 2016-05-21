@@ -1,8 +1,8 @@
 class Event(list):
-    """Event subscription.
-
-    A list of callable objects. Calling an instance of this will cause a
-    call to each item in the list in ascending order by index.
+    """Abonnement à un événement.
+    
+    Une list de fonctions. Appeller une instance de cet objet va appeller
+    chaque item de la liste en ordre ascendant par index.
 
     Example Usage:
     >>> def f(x):

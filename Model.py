@@ -18,6 +18,9 @@ class Model():
         self.balance = Balance()
         
     def getElements(self):
+        """
+            Retourne les elements chimiques depuis la base de données
+        """
         elements = self.db.fetchElements()
         return elements
         
